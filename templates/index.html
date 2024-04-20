@@ -264,16 +264,26 @@ body {
       <div class=&quot;article-body&quot;>
         <h2>{{ item.product_name }}</h2>
         <p>
-            {{ item.brand_name }}
+            <b>Brand: {{ item.brand_name }} </b>
         </p>
         <p>
-            {{ item.color }}
+            <b>Color: </b>
+            {% for color in  item.colors %}
+            
+                {{ color.name }},
+            
+        {% endfor %}
+        </p>
+        
+        <p>
+            <b>Size: </b>
+            {% for size in  item.sizes %}
+                {{ size.name }},
+            {% endfor %}
+            
         </p>
         <p>
-            {{ item.size }}
-        </p>
-        <p>
-            {{ item.price }}
+            <b>Price: </b>Rs. {{ item.price }}
         </p>
       </div>
     </div>
