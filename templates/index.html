@@ -270,15 +270,19 @@ body {
             <b>Color: </b>
             {% for color in  item.colors %}
             
-                {{ color.name }},
-            
+                {{ color.name }}
+                {% if not loop.last %},                
+                {% endif %}
+                
         {% endfor %}
         </p>
         
         <p>
             <b>Size: </b>
             {% for size in  item.sizes %}
-                {{ size.name }},
+                {{ size.name }}
+                {% if not loop.last %},                
+                {% endif %}
             {% endfor %}
             
         </p>
