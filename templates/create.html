@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <style>
+        .container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+h2 {
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Add Product</h2>
+        <form action="/create" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="product_name">Product Name:</label>
+                <input type="text" id="product_name" name="product_name" required>
+            </div>
+            <div class="form-group">
+                <label for="brand_name">Brand Name:</label>
+                <input type="text" id="brand_name" name="brand_name" required>
+            </div>
+            <div class="form-group">
+                <label for="color">Color:</label>
+                <input type="text" id="color" name="color" required>
+            </div>
+            <div class="form-group">
+                <label for="size">Size:</label>
+                <input type="text" id="size" name="size" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="text" id="price" name="price" required>
+            </div>
+            <div class="form-group">
+                <label for="product_picture">Product Picture:</label>
+                <input type="file" id="product_picture" name="cover" accept="image/*" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
