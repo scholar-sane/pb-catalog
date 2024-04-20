@@ -12,18 +12,19 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'  # Specify the upload folder
 db = SQLAlchemy(app)
 migrate = Migrate(app,db)
 
-# Define the association table for the many-to-many relationship between Product and Color
+# For establish a many-to-many relationship between the product and color tables
 product_color = db.Table('product_color',
     db.Column('product_id', db.Integer, db.ForeignKey('product.id'), primary_key=True),
     db.Column('color_id', db.Integer, db.ForeignKey('color.id'), primary_key=True)
 )
 
-# Define the association table for the many-to-many relationship between Product and Size
+# For create a many-to-many relationship between the product and size tables
 product_size_association = db.Table('product_size_association',
     db.Column('product_id', db.Integer, db.ForeignKey('product.id'), primary_key=True),
     db.Column('size_id', db.Integer, db.ForeignKey('size.id'), primary_key=True)
 )
 
+# Model for a product table
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     product_name = db.Column(db.String(50), nullable=False)
@@ -35,17 +36,21 @@ class Product(db.Model):
     colors = db.relationship('Color', secondary=product_color, backref='products')
     sizes = db.relationship('Size', secondary=product_size_association, backref='products')
 
+    # Defining a string representation of the Product object
     def __str__(self):
         return f"Product ID: {self.id}, Name: {self.product_name}, Brand: {self.brand_name}, Price: {self.price}, Colors: {self.colors}, Sizes: {self.sizes}"
 
+    # Defining a canonical string representation of the Product object
     def __repr__(self):
         return f"Product ID: {self.id}, Name: {self.product_name}, Brand: {self.brand_name}, Price: {self.price}, Colors: {self.colors}, Sizes: {self.sizes}"
 
 
+# Defines a SQLAlchemy model for colors in a database,
 class Color(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False, unique=True)
 
+# Defines a SQLAlchemy model for sizes in a database
 class Size(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False, unique=True)
@@ -53,16 +58,14 @@ class Size(db.Model):
 with app.app_context():
     db.create_all()
 
-# Create the database tables
-# db.create_all()
 
-
+# Route handler '/' renders the 'index.html' template 
 @app.route('/')
 def hello():
     products = Product.query.all()
-    print(products)
     return render_template('index.html', products=products)
 
+# '/create' route handles both GET and POST requests
 @app.route('/create', methods=['GET','POST'])
 def createProduct():
     if request.method == 'POST':
@@ -123,6 +126,4 @@ def createProduct():
         return render_template('create.html', colors=colors, sizes=sizes)
 
 if __name__ == '__main__':
-    # with app.app_context():
-    #     db.create_all()
     app.run(debug=True)
