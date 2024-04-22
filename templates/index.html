@@ -3,310 +3,448 @@
 
 <head>
   <meta charset="UTF-8">
-  
-
-    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
-
-    <meta name="apple-mobile-web-app-title" content="CodePen">
-
-    <link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
-
-    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
-
-
-
-  <meta charset="utf-8">
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-
-  <title>CodePen - Hovers and focus using the has() relational pseudo-class</title>
-
-  <link rel="stylesheet" media="screen" href="https://cpwebassets.codepen.io/assets/fullpage/fullpage-a7751fce9f8bdda3329296b44cd901f541bfaa7c5417190fba49dc1cf6fd799f.css" />
-  
-
-    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
-
-    <meta name="apple-mobile-web-app-title" content="CodePen">
-
-    <link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
-
-    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
-
-
-
-
-
-  <title>CodePen - Hovers and focus using the has() relational pseudo-class</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Display</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
   <style>
-    html { font-size: 15px; }
-    html, body { margin: 0; padding: 0; min-height: 100%; }
-    body { height:100%; display: flex; flex-direction: column; }
-    .referer-warning {
-      background: black;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-      padding: 0.75em;
-      color: white;
-      text-align: center;
-      font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, system-ui, Sans-Serif;
-      line-height: 1.2;
-      font-size: 1rem;
-      position: relative;
-      z-index: 2;
+    /* CSS styles */
+    body {
+      margin: 0;
+      padding: 48px 0;
+      font-family: "Figtree", sans-serif;
+      font-size: 1.2rem;
+      line-height: 1.6rem;
+      background-image: linear-gradient(45deg, #7c9885, #b5b682);
+      min-height: 100vh;
     }
-    .referer-warning span { font-family: initial; }
-    .referer-warning h1 { font-size: 1.2rem; margin: 0; }
-    .referer-warning a { color: #56bcf9; }
+
+    .articles {
+      display: grid;
+      max-width: 1200px;
+      margin-inline: auto;
+      padding-inline: 24px;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    article {
+      --img-scale: 1.001;
+      --title-color: black;
+      --link-icon-translate: -20px;
+      --link-icon-opacity: 0;
+      position: relative;
+      border-radius: 16px;
+      box-shadow: none;
+      background: #fff;
+      transform-origin: center;
+      transition: all 0.4s ease-in-out;
+      overflow: hidden;
+    }
+
+    article a::after {
+      position: absolute;
+      inset-block: 0;
+      inset-inline: 0;
+      cursor: pointer;
+      content: "";
+    }
+
+    article h2 {
+      margin: 0 0 18px 0;
+      font-family: "Bebas Neue", cursive;
+      font-size: 1.9rem;
+      letter-spacing: 0.06em;
+      color: var(--title-color);
+      transition: color 0.3s ease-out;
+    }
+
+    figure {
+      margin: 0;
+      padding: 0;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+    }
+
+    article img {
+      max-width: 100%;
+      transform-origin: center;
+      transform: scale(var(--img-scale));
+      transition: transform 0.4s ease-in-out;
+    }
+
+    .article-body {
+      padding: 24px;
+    }
+
+    article a {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      color: #28666e;
+    }
+
+    article a:focus {
+      outline: 1px dotted #28666e;
+    }
+
+    article a .icon {
+      min-width: 24px;
+      width: 24px;
+      height: 24px;
+      margin-left: 5px;
+      transform: translateX(var(--link-icon-translate));
+      opacity: var(--link-icon-opacity);
+      transition: all 0.3s;
+    }
+
+    /* Using the has() relational pseudo selector to update our custom properties */
+    article:has(:hover, :focus) {
+      --img-scale: 1.1;
+      --title-color: #28666e;
+      --link-icon-translate: 0;
+      --link-icon-opacity: 1;
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    }
+
+    /* Additional styles */
+    input[type="checkbox"] {
+      margin-right: 5px;
+    }
+
+    #message {
+      display: none;
+      padding: 10px;
+      background-color: #4caf50;
+      color: white;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 5px;
+      z-index: 999;
+    }
+
+
+        .container {
+      padding: 2rem 0rem;
+    }
+
+    .table-image {
+      
+      thead {
+        td, th {
+          border: 0;
+          color: #666;
+          font-size: 0.8rem;
+        }
+      }
+      
+      td, th {
+        vertical-align: middle;
+        text-align: center;
+        
+        &.qty {
+          max-width: 2rem;
+        }
+      }
+    }
+
+    .price {
+      margin-left: 1rem;
+    }
+
+    .modal-footer {
+      padding-top: 0rem;
+    }
   </style>
 </head>
 
-<body class="">
+<body>
 
-
-  <div id="result-iframe-wrap" role="main">
-    <iframe
-      id="result"
-      srcdoc="<!DOCTYPE html>
-<html lang=&quot;en&quot; >
-
-<head>
-  <meta charset=&quot;UTF-8&quot;>
-  
-
-    <link rel=&quot;apple-touch-icon&quot; type=&quot;image/png&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png&quot; />
-
-    <meta name=&quot;apple-mobile-web-app-title&quot; content=&quot;CodePen&quot;>
-
-    <link rel=&quot;shortcut icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico&quot; />
-
-    <link rel=&quot;mask-icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg&quot; color=&quot;#111&quot; />
-
-
-
-  
-  
-
-  <title>CodePen - Hovers and focus using the has() relational pseudo-class</title>
-
-    <link rel=&quot;canonical&quot; href=&quot;https://codepen.io/utilitybend/pen/bGvjLba&quot;>
-  
-  
-  <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;amp;family=Figtree:wght@300;600&amp;amp;display=swap'>
-  
-<style>
-article {
-  --img-scale: 1.001;
-  --title-color: black;
-  --link-icon-translate: -20px;
-  --link-icon-opacity: 0;
-  position: relative;
-  border-radius: 16px;
-  box-shadow: none;
-  background: #fff;
-  transform-origin: center;
-  transition: all 0.4s ease-in-out;
-  overflow: hidden;
-}
-
-article a::after {
-  position: absolute;
-  inset-block: 0;
-  inset-inline: 0;
-  cursor: pointer;
-  content: &quot;&quot;;
-}
-
-/* basic article elements styling */
-article h2 {
-  margin: 0 0 18px 0;
-  font-family: &quot;Bebas Neue&quot;, cursive;
-  font-size: 1.9rem;
-  letter-spacing: 0.06em;
-  color: var(--title-color);
-  transition: color 0.3s ease-out;
-}
-
-figure {
-  margin: 0;
-  padding: 0;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-}
-
-article img {
-  max-width: 100%;
-  transform-origin: center;
-  transform: scale(var(--img-scale));
-  transition: transform 0.4s ease-in-out;
-}
-
-.article-body {
-  padding: 24px;
-}
-
-article a {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  color: #28666e;
-}
-
-article a:focus {
-  outline: 1px dotted #28666e;
-}
-
-article a .icon {
-  min-width: 24px;
-  width: 24px;
-  height: 24px;
-  margin-left: 5px;
-  transform: translateX(var(--link-icon-translate));
-  opacity: var(--link-icon-opacity);
-  transition: all 0.3s;
-}
-
-/* using the has() relational pseudo selector to update our custom properties */
-article:has(:hover, :focus) {
-  --img-scale: 1.1;
-  --title-color: #28666e;
-  --link-icon-translate: 0;
-  --link-icon-opacity: 1;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-}
-
-
-/************************ 
-Generic layout (demo looks)
-**************************/
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  padding: 48px 0;
-  font-family: &quot;Figtree&quot;, sans-serif;
-  font-size: 1.2rem;
-  line-height: 1.6rem;
-  background-image: linear-gradient(45deg, #7c9885, #b5b682);
-  min-height: 100vh;
-}
-
-.articles {
-  display: grid;
-  max-width: 1200px;
-  margin-inline: auto;
-  padding-inline: 24px;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
-}
-
-@media screen and (max-width: 960px) {
-  article {
-    container: card/inline-size;
-  }
-  .article-body p {
-    display: none;
-  }
-}
-
-@container card (min-width: 380px) {
-  .article-wrapper {
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    gap: 16px;
-  }
-  .article-body {
-    padding-left: 0;
-  }
-  figure {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-  figure img {
-    height: 100%;
-    aspect-ratio: 1;
-    object-fit: cover;
-  }
-}
-
-.sr-only:not(:focus):not(:active) {
-  clip: rect(0 0 0 0); 
-  clip-path: inset(50%);
-  height: 1px;
-  overflow: hidden;
-  position: absolute;
-  white-space: nowrap; 
-  width: 1px;
-}
-</style>
-
-  <script>
-  window.console = window.console || function(t) {};
-</script>
-
-  
-  
-</head>
-
-<body translate=&quot;no&quot;>
-  <section class=&quot;articles&quot;>
-{% for item in products %}
-
-<article>
-    <div class=&quot;article-wrapper&quot;>
-      <figure>
-        <img src=&quot;{{ item.cover }}&quot; alt=&quot;&quot; />
-      </figure>
-      <div class=&quot;article-body&quot;>
-        <h2>{{ item.product_name }}</h2>
-        <p>
-            <b>Brand: {{ item.brand_name }} </b>
-        </p>
-        <p>
-            <b>Color: </b>
-            {% for color in  item.colors %}
-            
-                {{ color.name }}
-                {% if not loop.last %},                
-                {% endif %}
-                
-        {% endfor %}
-        </p>
-        
-        <p>
-            <b>Size: </b>
-            {% for size in  item.sizes %}
-                {{ size.name }}
-                {% if not loop.last %},                
-                {% endif %}
+  <section class="articles">
+    {% for item in products %}
+    <article>
+      <div class="article-wrapper">
+        <figure>
+          <img src="{{ item.cover }}" alt="{{ item.product_name }}" />
+        </figure>
+        <div class="article-body">
+          <h2>{{ item.product_name }}</h2>
+          <form class="product-form">
+            <label>Colors:</label><br>
+            {% for color in item.colors %}
+            <input type="checkbox" id="color_{{ loop.index }}" name="colors" value="{{ color.name }}"> {{ color.name }}<br>
             {% endfor %}
-            
-        </p>
-        <p>
-            <b>Price: </b>Rs. {{ item.price }}
-        </p>
+            <br>
+            <label>Sizes:</label><br>
+            {% for size in item.sizes %}
+            <input type="checkbox" id="size_{{ loop.index }}" name="sizes" value="{{ size.name }}"> {{ size.name }}<br>
+            {% endfor %}
+            <br>
+          </form>
+          
+          <p><b>Price:</b> Rs. {{ item.price }}</p>
+
+          <button type="button" class="add-to-cart" data-toggle="modal" data-product-id="{{ item.id }}">Add to Cart</button>      
+        </div>
       </div>
-    </div>
-  </article>
-    
-{% endfor %}
-  
+    </article>
+    {% endfor %}
+    <br/>
+    <!-- Button to trigger modal -->
+<div class="container">
+  <button type="button" class="btn btn-success" id="viewCartBtn">
+      View Cart
+  </button>  
+</div>
 
-  
-</section>
-  
-  
-  
-</body>
-
-</html>
-"">
-      </iframe>
+<!-- Modal -->
+<div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header border-bottom-0">
+              <h5 class="modal-title" id="exampleModalLabel">
+                  Your Shopping Cart
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div id="cartItemsBody" class="modal-body">
+              <table class="table table-image">
+                  <thead>
+                      <tr>
+                          <th scope="col"></th>
+                          <th scope="col">Product Name</th>
+                          <th scope="col">Color</th>
+                          <th scope="col">Size</th>
+                          <th scope="col">Qty</th>
+                          <th scope="col">Total</th>
+                      </tr>
+                  </thead>
+                  <tbody></tbody>
+              </table> 
+              <div class="d-flex justify-content-end">
+                  <h5>Total: <span id="cartTotal" class="price text-success">$0</span></h5>
+              </div>
+          </div>
+          <div class="modal-footer border-top-0 d-flex justify-content-between">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-success">Checkout</button>
+          </div>
+      </div>
   </div>
+</div>
+
+
+
+    
+    
+
+  </section>
+
+  <div id="message"></div>
+
+  <!-- Include necessary JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Include your custom JavaScript file -->
+<script src="{{ url_for('static', filename='custom.js') }}"></script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      const addToCartButtons = document.querySelectorAll('.add-to-cart');
+      const message = document.getElementById('message');
+      const cartItemsBody = document.querySelector('#cartModal .modal-body tbody');
+      const cartTotal = document.getElementById('cartTotal');
+  
+      addToCartButtons.forEach(button => {
+          button.addEventListener('click', function(event) {
+              const productId = button.dataset.productId;
+              const productName = button.parentNode.querySelector('h2').textContent;
+              const price = button.parentNode.querySelector('p').textContent.replace('Price: Rs. ', '');
+              const selectedColors = getSelectedValues('colors');
+              const selectedSizes = getSelectedValues('sizes');
+              addToCart(productId, productName, price, selectedColors, selectedSizes);
+              showMessage(`${productName} added to cart`);
+              const productImage = button.parentNode.parentNode.querySelector('img').src;
+              addImageToCart(productImage, productName);
+          });
+      });
+  
+      function getSelectedValues(name) {
+          const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+          const values = Array.from(checkboxes).map(checkbox => checkbox.value);
+          return values;
+      }
+  
+      function addToCart(productId, productName, price, colors, sizes) {
+          const cartItem = `
+              <tr>
+                  <td class="w-25">
+                      <img src="https://via.placeholder.com/150" class="img-fluid img-thumbnail" alt="${productName}">
+                  </td>
+                  <td>${productName}</td>
+                  <td>${price}</td>
+                  <td class="qty"><input type="text" class="form-control" value="1"></td>
+                  <td>${price}</td>
+              </tr>
+          `;
+          cartItemsBody.innerHTML += cartItem;
+          updateTotal();
+      }
+  
+      function updateTotal() {
+          let total = 0;
+          cartItemsBody.querySelectorAll('tr').forEach(row => {
+              const price = parseFloat(row.querySelector('td:nth-child(3)').textContent);
+              const quantity = parseInt(row.querySelector('.qty input').value);
+              total += price * quantity;
+          });
+          cartTotal.textContent = 'Rs. ' + total.toFixed(2);
+      }
+  
+      function showMessage(text) {
+          message.textContent = text;
+          message.style.display = 'block';
+          setTimeout(() => {
+              message.style.display = 'none';
+          }, 3000); // Hide the message after 3 seconds
+      }
+  
+      function addImageToCart(imageUrl, productName) {
+          const cartImage = document.createElement('img');
+          cartImage.src = imageUrl;
+          cartImage.alt = productName;
+          cartImage.classList.add('img-fluid', 'img-thumbnail', 'w-25');
+          const cartImageTd = document.querySelector('#cartItemsBody tr:last-child td:first-child');
+          cartImageTd.innerHTML = '';
+          cartImageTd.appendChild(cartImage);
+      }
+  });
+  
+  // Add event listener to View Cart button
+  document.getElementById('viewCartBtn').addEventListener('click', function() {
+      // Trigger modal display
+      $('#cartModal').modal('show');
+  });
+  </script>
+
+  <!-- <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        const message = document.getElementById('message');
+        const cartItemsBody = document.querySelector('#cartModal .modal-body tbody');
+        const cartTotal = document.getElementById('cartTotal');
+    
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                const productId = button.dataset.productId;
+                const productName = button.parentNode.querySelector('h2').textContent;
+                const price = parseFloat(button.parentNode.querySelector('p').textContent.replace('Price: Rs. ', ''));
+                const selectedColors = getSelectedValues('colors');
+                const selectedSizes = getSelectedValues('sizes');
+                addToCart(productId, productName, price, selectedColors, selectedSizes);
+                showMessage(`${productName} added to cart`);
+                const productImage = button.parentNode.parentNode.querySelector('img').src;
+                addImageToCart(productImage, productName);
+                addColorsToCart(selectedColors);
+                addSizesToCart(selectedSizes);
+            });
+        });
+    
+        function getSelectedValues(name) {
+            const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+            const values = Array.from(checkboxes).map(checkbox => checkbox.value);
+            return values;
+        }
+    
+        function addToCart(productId, productName, price, colors, sizes) {
+            const cartItem = `
+                <tr>
+                    <td class="w-25">
+                        <img src="https://via.placeholder.com/150" class="img-fluid img-thumbnail" alt="${productName}">
+                    </td>
+                    <td>${productName}</td>
+                    <td>${colors.join(', ')}</td>
+                    <td>${sizes.join(', ')}</td>
+                    <td class="qty"><input type="number" class="form-control" value="1" min="1"></td>
+                    <td>${price}</td>
+                    <td>${price}</td>
+                </tr>
+            `;
+            cartItemsBody.innerHTML += cartItem;
+            updateTotal();
+        }
+    
+        function updateTotal() {
+            let total = 0;
+            cartItemsBody.querySelectorAll('tr').forEach(row => {
+                const price = parseFloat(row.querySelector('td:nth-child(6)').textContent);
+                const quantity = parseInt(row.querySelector('.qty input').value);
+                total += price * quantity;
+            });
+            cartTotal.textContent = 'Rs. ' + total.toFixed(2);
+        }
+    
+        function showMessage(text) {
+            message.textContent = text;
+            message.style.display = 'block';
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 3000); // Hide the message after 3 seconds
+        }
+    
+        function addImageToCart(imageUrl, productName) {
+            const cartImage = document.createElement('img');
+            cartImage.src = imageUrl;
+            cartImage.alt = productName;
+            cartImage.classList.add('img-fluid', 'img-thumbnail', 'w-25');
+            const cartImageTd = document.querySelector('#cartItemsBody tr:last-child td:first-child');
+            cartImageTd.innerHTML = '';
+            cartImageTd.appendChild(cartImage);
+        }
+    
+        function addColorsToCart(colors) {
+            const colorsList = document.createElement('ul');
+            colors.forEach(color => {
+                const colorItem = document.createElement('li');
+                colorItem.textContent = color;
+                colorsList.appendChild(colorItem);
+            });
+            const cartColorsTd = document.querySelector('#cartItemsBody tr:last-child td:nth-child(3)');
+            cartColorsTd.innerHTML = '';
+            cartColorsTd.appendChild(colorsList);
+        }
+    
+        function addSizesToCart(sizes) {
+            const sizesList = document.createElement('ul');
+            sizes.forEach(size => {
+                const sizeItem = document.createElement('li');
+                sizeItem.textContent = size;
+                sizesList.appendChild(sizeItem);
+            });
+            const cartSizesTd = document.querySelector('#cartItemsBody tr:last-child td:nth-child(4)');
+            cartSizesTd.innerHTML = '';
+            cartSizesTd.appendChild(sizesList);
+        }
+    });
+    
+    // Add event listener to View Cart button
+    document.getElementById('viewCartBtn').addEventListener('click', function() {
+        // Trigger modal display
+        $('#cartModal').modal('show');
+    });
+    </script> -->
+    
+    
+    
+    
+  
 
 </body>
 

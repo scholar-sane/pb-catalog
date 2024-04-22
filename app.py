@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -54,6 +54,7 @@ class Color(db.Model):
 class Size(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False, unique=True)
+
 
 with app.app_context():
     db.create_all()
@@ -124,6 +125,20 @@ def createProduct():
         colors = Color.query.all()
         sizes = Size.query.all()
         return render_template('create.html', colors=colors, sizes=sizes)
+
+
+@app.route('/add_to_cart', methods=['GET', 'POST'])
+def add_to_cart():
+    data = request.get_json()
+    product_id = data['productId']
+    colors = data['colors']
+    sizes = data['sizes']
+    
+    message = f'Item added to cart successfully. Product ID: {product_id}, Colors: {colors}, Sizes: {sizes}'
+    return jsonify({'message': message})
+
+    # return render_template('index.html')
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
